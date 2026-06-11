@@ -44,7 +44,8 @@ app.disable('x-powered-by')
 app.use(helmet())
 app.use(cors({
   origin(origin, callback) {
-    if (!origin || allowedOrigins.has(origin) || localDevOrigin.test(origin)) {
+    const frontendOrigin = process.env.FRONTEND_ORIGIN ? process.env.FRONTEND_ORIGIN.replace(/\/$/, '') : null;
+    if (!origin || allowedOrigins.has(origin) || localDevOrigin.test(origin) || origin === frontendOrigin || !frontendOrigin) {
       callback(null, true)
       return
     }
